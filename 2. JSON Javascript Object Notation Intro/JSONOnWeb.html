@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>JSON</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
  
 <body>
@@ -19,6 +20,8 @@
     <script type="text/javascript">
         var myForm = document.getElementById('myForm');
         
+        //When page is loading, it will check any 'person' value stored in session
+        //if yes, it will convert back to JSON object via JSON.parse
         window.onload = function(){
             if(sessionStorage['person'] != null){
                 var data = JSON.parse(sessionStorage['person'])
@@ -29,7 +32,7 @@
         }
         
         
-        
+        //When form submit, it will store data into session by converting JSON object into a string(JSON.stringify)
         myForm.addEventListener('submit',function(e){
             e.preventDefault();
             var data = JSON.stringify(formData(myForm));
@@ -40,6 +43,7 @@
         })
         
         function formData(form){
+            //querySelectorAll is similar to $() in jQuery
             var el = form.querySelectorAll('input[type="text"]');
             var myData = {};
             for(var x=0;x<el.length;x++){
