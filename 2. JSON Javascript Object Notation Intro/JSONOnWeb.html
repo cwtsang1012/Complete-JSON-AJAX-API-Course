@@ -6,55 +6,54 @@
     <title>JSON</title>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
- 
+
 <body>
     <h1>Learn JSON</h1>
     <div id="output"></div>
     <form id="myForm">
-    <input type="text" name="first" value="Laurence"><br>
-    <input type="text" name="last" value="Svekis"><br>
-     <input type="text" name="email" value="test@test.com"><br>
-    <input type="text" name="company" value="Discoveryvip"><br>
-    <input type="submit" value="submit">    
+        <input type="text" name="first" value="Laurence"><br>
+        <input type="text" name="last" value="Svekis"><br>
+        <input type="text" name="email" value="test@test.com"><br>
+        <input type="text" name="company" value="Discoveryvip"><br>
+        <input type="submit" value="submit">
     </form>
     <script type="text/javascript">
         var myForm = document.getElementById('myForm');
-        
+
         //When page is loading, it will check any 'person' value stored in session
         //if yes, it will convert back to JSON object via JSON.parse
-        window.onload = function(){
-            if(sessionStorage['person'] != null){
+        window.onload = function() {
+            if (sessionStorage['person'] != null) {
                 var data = JSON.parse(sessionStorage['person'])
-                var message = 'Welcome '+data.first+' '+data.last+' to the site!!!';
+                var message = 'Welcome ' + data.first + ' ' + data.last + ' to the site!!!';
                 document.getElementById('output').innerHTML = message;
                 console.log(data)
             }
         }
-        
-        
+
+
         //When form submit, it will store data into session by converting JSON object into a string(JSON.stringify)
-        myForm.addEventListener('submit',function(e){
+        myForm.addEventListener('submit', function(e) {
             e.preventDefault();
             var data = JSON.stringify(formData(myForm));
-            if(data){
+            if (data) {
                 sessionStorage['person'] = data;
             }
             console.log(data)
         })
-        
-        function formData(form){
+
+        function formData(form) {
             //querySelectorAll is similar to $() in jQuery
             var el = form.querySelectorAll('input[type="text"]');
             var myData = {};
-            for(var x=0;x<el.length;x++){
+            for (var x = 0; x < el.length; x++) {
                 var name = el[x].name;
                 var value = el[x].value;
-                myData[name ] = value
+                myData[name] = value
             }
-            
+
             return myData;
-        }        
-        
+        }
     </script>
 </body>
  

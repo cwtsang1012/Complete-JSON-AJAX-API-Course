@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>JSON</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <h1>Checklist JSON in javascript</h1>
+    <dt>
+        <dt>2 Performances:</dt>
+    <dd>- adding checkitems</dd>
+    <dd>- check/uncheck the box</dd>
+    </dt>
+    <div id="output"></div>
+
+    <script type="text/javascript">
+        //use JSON within javascript object
+        //One of the difference between JSON and javascript object is that JSON allows space in name part of name/value pair
+        var data = {
+            "tasks": {
+                "Cut Gracss": false,
+                "Clean Room": false,
+                "Go to Gym": true,
+                "Make Dinner": false
+            }
+        };
+        console.log(data);
+        var dataStr = JSON.stringify(data);
+        console.log(dataStr);
+    </script>
+</body>
+
+</html>
