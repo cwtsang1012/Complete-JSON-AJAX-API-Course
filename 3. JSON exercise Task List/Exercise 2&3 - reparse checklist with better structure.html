@@ -31,23 +31,44 @@
                 dataJSON = JSON.parse(sessionStorage["tasks"]);
             } else {
                 //default value
-                var data = '[{"info": "CutGrass", "status": false}, {"info": "Clean Room","status": false}, {"info": "Go to Gym","status": false},{"info": "Make Dinner","status": false}]';
+                var data = '[{"info": "Cut Grass", "status": false}, {"info": "Clean Room","status": false}, {"info": "Go to Gym","status": false},{"info": "Make Dinner","status": false}]';
                 dataJSON = JSON.parse(data);
             }
             console.log(dataJSON);
             buildCheckboxes(dataJSON);
         };
-
-        function buildCheckboxes(data) {
-            var html = "";
-            for (var item in data) {
-                var status = (data[item].status) ? 'checked' : '';
-                html += '<li>' + data[item].info + '<input type="checkbox" value="' + item + '" ' + status + '/></li>';
-                $('#tasklist').html(html);
-                addEvent(); //solution in video
-            }
+        
+        function addCheckbox(data,key){
+            //using javascript to create html element
+            var li = document.createElement('li');
+            var checkbox = document.createElement('input');
+            var textInside = document.createTextNode(data.info);
+            checkbox.type = "checkbox";
+            checkbox.value = key;
+            checkbox.checked = data.status;
+            checkbox.setAttribute('onchange', 'updateJSON()');
+            
+            li.appendChild(textInside);
+            li.appendChild(checkbox);
+            $('#tasklist').append(li);
         }
 
+        function buildCheckboxes(data) {
+            for (var key in data) {
+                addCheckbox(data[key],key);
+            }
+        }
+        
+        //Adding new task
+        function addNewItem(data){
+            addCheckbox(data, dataJSON.length);
+            dataJSON.push(data);    
+        }
+        
+        $('#myForm').submit(function(e){
+           e.preventDefault(); 
+           addNewItem({"info": $('input[name=task]').val(), "status": false});    
+        });
 
         // Enhance Interaction
 
@@ -59,25 +80,15 @@
         });
         */
 
-
-        //Solution in video -> javascript version
-        function addEvent() {
-            var checkboxes = document.querySelectorAll('#tasklist input[type="checkbox"]');
-            // var checkboxes = $('#tasklist :checkbox');
-            for (var index in checkboxes) {
-                checkboxes[index].onchange = updateJSON;
-            }
-
-        }
-
         function updateJSON() {
             var key = event.target.value;
             dataJSON[key].status = event.target.checked;
             console.log(dataJSON);
+            sessionStorage["tasks"] = JSON.stringify(dataJSON);
         }
 
         //Store data into session of the browser
-
+        
     </script>
 </body>
 
