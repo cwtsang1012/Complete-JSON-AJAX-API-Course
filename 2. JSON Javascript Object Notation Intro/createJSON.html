@@ -28,18 +28,24 @@
         
         var html = '';
         for(var x in myObj.friends){
+			//for array... x will be the index
+			console.log(x);
             html += (Number(x)+1) + ' . ' + myObj.friends[x].firstName + ' ' + myObj.friends[x].lastName + '<br>'
         }
         
         for (var item in myObj ){
-            console.log(item);
+            //for object....item will be the property name
+			console.log(item);
         }
         document.getElementById('output').innerHTML = html;
         
         
         var html = '';
         
-        myObj.friends.splice(3,0,{
+		//1st param: start index, 
+		//2nd param: no of object needs to be deleted from start index,
+		//3rd param: object to be inserted at start index
+        myObj.friends.splice(2,2,{
                 "firstName": "New"
                 , "lastName": "Person"
            })
