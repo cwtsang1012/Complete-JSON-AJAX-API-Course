@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>JSON</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <h1>Checklist JSON in javascript</h1>
+    <dt>
+        <dt>2 Performances:</dt>
+    <dd>- adding checkitems</dd>
+    <dd>- check/uncheck the box</dd>
+    </dt>
+    <div id="output">
+        <ul id="tasklist"></ul>
+    </div>
+    <form id="myForm">
+        Task: <input type='text' name='task' placeholder="add task">
+        <input type="submit" value="Add new task">
+    </form>
+    
+    <script type="text/javascript">
+        //use JSON within javascript object
+        //One of the difference between JSON and javascript object is that JSON allows space in name part of name/value pair
+        var dataJSON = '';
+        window.onload = function() {
+            if (sessionStorage["tasks"] != null) {
+                dataJSON = JSON.parse(sessionStorage["tasks"]);
+            } else {
+                //default value
+                var data = '[{"info": "Cut Grass", "status": false}, {"info": "Clean Room","status": false}, {"info": "Go to Gym","status": false},{"info": "Make Dinner","status": false}]';
+                dataJSON = JSON.parse(data);
+            }
+            console.log(dataJSON);
+            buildCheckboxes(dataJSON);
+        };
+        
+		function buildCheckboxes(data) {
+            for (var key in data) {
+                addCheckbox(data[key],key);
+            }
+        }
+		
+        function addCheckbox(data,key){
+            //using javascript to create html element
+            var li = document.createElement('li');
+            var checkbox = document.createElement('input');
+            var textInside = document.createTextNode(data.info);
+            checkbox.type = "checkbox";
+            checkbox.value = key;
+            checkbox.checked = data.status;
+            checkbox.setAttribute('onchange', 'updateJSON()');
+            
+            li.appendChild(textInside);
+            li.appendChild(checkbox);
+            $('#tasklist').append(li);
+        }
+		
+		// Enhance Interaction
+
+        //My solution -> jQuery version
+        /*
+        $('#tasklist :checkbox').on('change', function(e){
+           dataJSON[$(this).val()].status = $(this).is(':checked');
+           console.log(dataJSON);
+        });
+        */
+
+        function updateJSON() {
+            var key = event.target.value;
+            dataJSON[key].status = event.target.checked;
+            console.log(dataJSON);
+            sessionStorage["tasks"] = JSON.stringify(dataJSON); //ensure update dataJSON object can be retrieved after refreshing the page
+        }
+
+        //Store data into session of the browser
+		
+		$('#myForm').submit(function(e){
+           e.preventDefault(); 
+           addNewItem({"info": $('input[name=task]').val(), "status": false});    
+        });
+		
+        //Adding new task
+        function addNewItem(data){
+            addCheckbox(data, dataJSON.length);
+            dataJSON.push(data);    
+        }
+    </script>
+</body>
+
+</html>

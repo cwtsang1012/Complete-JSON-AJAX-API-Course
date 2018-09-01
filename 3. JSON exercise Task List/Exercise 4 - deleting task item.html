@@ -13,6 +13,7 @@
         <dt>2 Performances:</dt>
     <dd>- adding checkitems</dd>
     <dd>- check/uncheck the box</dd>
+	<dd>- delete the box by clicking x</dd>
     </dt>
     <div id="output">
         <ul id="tasklist"></ul>
@@ -27,22 +28,42 @@
         //One of the difference between JSON and javascript object is that JSON allows space in name part of name/value pair
         var dataJSON = '';
         window.onload = function() {
-            if (sessionStorage["tasks"] != null) {
-                dataJSON = JSON.parse(sessionStorage["tasks"]);
+            if (sessionStorage["tasklist"] != null) {
+                dataJSON = JSON.parse(sessionStorage["tasklist"]);
             } else {
                 //default value
-                var data = '[{"info": "Cut Grass", "status": false}, {"info": "Clean Room","status": false}, {"info": "Go to Gym","status": false},{"info": "Make Dinner","status": false}]';
-                dataJSON = JSON.parse(data);
+                //var data = '[{"info": "Cut Grass", "status": false}, {"info": "Clean Room","status": false}, {"info": "Go to Gym","status": false},{"info": "Make Dinner","status": false}]';
+                //http://myjson.com/ => a service that allow you to create json data and return back as an url
+				//grap the info from web api
+				var xhr = new XMLHttpRequest();
+				xhr.onreadystatechange = function(){
+					console.log(xhr);
+					if (xhr.readyState == 4 && xhr.status == 200){
+						//condition for success ajax call
+						dataJSON = JSON.parse(xhr.responseText);
+						console.log(dataJSON);
+						buildCheckboxes(dataJSON);
+					}
+				};
+				xhr.open("GET","https://api.myjson.com/bins/1fa4wk", true);
+				xhr.send();
             }
-            console.log(dataJSON);
-            buildCheckboxes(dataJSON);
         };
         
+		function buildCheckboxes(data) {
+            for (var key in data) {
+                addCheckbox(data[key],key);
+            }
+        }
+		
         function addCheckbox(data,key){
             //using javascript to create html element
             var li = document.createElement('li');
             var checkbox = document.createElement('input');
             var textInside = document.createTextNode(data.info);
+			var span = document.createElement('span');
+			span.innerHTML = 'x';
+			span.onclick = remove;
             checkbox.type = "checkbox";
             checkbox.value = key;
             checkbox.checked = data.status;
@@ -50,27 +71,11 @@
             
             li.appendChild(textInside);
             li.appendChild(checkbox);
+			li.appendChild(span);
             $('#tasklist').append(li);
         }
-
-        function buildCheckboxes(data) {
-            for (var key in data) {
-                addCheckbox(data[key],key);
-            }
-        }
-        
-        //Adding new task
-        function addNewItem(data){
-            addCheckbox(data, dataJSON.length);
-            dataJSON.push(data);    
-        }
-        
-        $('#myForm').submit(function(e){
-           e.preventDefault(); 
-           addNewItem({"info": $('input[name=task]').val(), "status": false});    
-        });
-
-        // Enhance Interaction
+		
+		// Enhance Interaction
 
         //My solution -> jQuery version
         /*
@@ -84,11 +89,29 @@
             var key = event.target.value;
             dataJSON[key].status = event.target.checked;
             console.log(dataJSON);
-            sessionStorage["tasks"] = JSON.stringify(dataJSON);
+            sessionStorage["tasklist"] = JSON.stringify(dataJSON); //ensure update dataJSON object can be retrieved after refreshing the page
         }
 
-        //Store data into session of the browser
-        
+        function remove(e){
+			console.log($(this).prev().val()); // in javascript: this.previousElementSibling.value
+			var index = $(this).prev().val();
+			tasklist.innerHTML = "";
+			dataJSON.splice(index, 1);
+			buildCheckboxes(dataJSON);
+			sessionStorage["tasklist"] = JSON.stringify(dataJSON);
+		}
+		
+		$('#myForm').submit(function(e){
+           e.preventDefault(); 
+           addNewItem({"info": $('input[name=task]').val(), "status": false});    
+        });
+		
+        //Adding new task
+        function addNewItem(data){
+            addCheckbox(data, dataJSON.length);
+            dataJSON.push(data);
+			sessionStorage["tasklist"] = JSON.stringify(dataJSON);			
+        }
     </script>
 </body>
 
