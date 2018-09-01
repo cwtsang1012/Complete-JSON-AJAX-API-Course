@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>AJAX</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<h1>Learn AJAX</h1>
+	<div id="output"></div>
+	<button id="loadNew">Load</button>
+	
+	<script type="text/javascript">
+		//Solution in video
+		/*
+		var buttonClick = document.getElementById('loadNew');
+		buttonClick.addEventListener('click', function(){
+			loadAjax();
+		});
+		*/
+		
+		$('#loadNew').on('click', loadAjax);
+		
+		function loadAjax(){
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function(){
+				console.log('state changed', xhr.readyState, xhr.status);
+				if (xhr.readyState == 4 && xhr.status == 200)
+				{
+					var dataObj = JSON.parse(xhr.responseText).results[0];
+					console.log(dataObj);
+					var message = '<h2>' + dataObj.name.first + " " + dataObj.name.last + '</hr2><br><img src="' + dataObj.picture.medium + '" />';
+					$('#output').html(message);
+				}
+			};
+			//Will do actions in onreadystatechange earlier than those specific method such as onprogress and onload
+			//See the sequence in console
+			xhr.onprogress = function(){
+				console.log('progress', xhr.readyState, xhr.status);
+				$('#output').html("Loading...");
+			}
+			xhr.onload = function(){
+				console.log('done', xhr.readyState, xhr.status);
+			}
+			xhr.open("GET", "https://randomuser.me/api/", true);
+			xhr.send();
+		}
+		
+	</script>
+</body>
+</html>

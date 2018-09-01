@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>AJAX</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<h1>Learn AJAX</h1>
+	<div id="output"></div>
+	<button id="loadNew">Load</button>
+	
+	<script type="text/javascript">
+		//Solution in video
+		/*
+		var buttonClick = document.getElementById('loadNew');
+		buttonClick.addEventListener('click', function(){
+			loadAjax();
+		});
+		*/
+		
+		$('#loadNew').on('click', loadAjax);
+		
+		function loadAjax(){
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function(){
+				if (xhr.readyState == 4 && xhr.status == 200)
+				{
+					//For loading local file in chrome
+					//you will encounter an error: Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https, chrome-extension-resource.
+					//in ordert to continue the result
+					/*
+						1. Download a chrome extension: Web Server for Chrome
+						2. Open a tab
+						3. type chrome://apps
+						4. Point the file location to your folder
+						5. Click the Web Server URL to enter the localhost
+						6. Select this file and can get the result
+					*/
+					$('#output').html(xhr.responseText);
+				}
+			};
+			xhr.open("GET", "simple.txt", true);
+			xhr.send();
+		}
+		
+	</script>
+</body>
+</html>
