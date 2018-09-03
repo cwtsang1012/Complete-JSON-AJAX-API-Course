@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>AJAX</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<h1>Learn AJAX - Fetch</h1>
+	<p>Not support cross browser right now. Similar to XMLHttpRequest, but slightly better than XMLHttpRequest.</p>
+	<p>It is more flexible than XMLHttpRequest since it has option to send header</p>
+	<div id="output"></div>
+	<button id='trigger'>Get a Joke</button>
+	
+	<script type="text/javascript">
+		//solution in video
+		//var joker = document.querySelector('#trigger');
+		//joker.addEventListener('click', loadJoke);
+		
+		$('#trigger').click(loadJoke);
+		
+		function loadJoke(){
+			var url = "https://api.chucknorris.io/jokes/random";
+			//Javascript Fetch Simple Example 1 (Same as 2)
+			fetch('Simple.txt').then(function(response){
+				response.text().then(function(text){
+					console.log(text);
+				});
+			});
+			
+			//Javascript Fetch Simple Example 2
+			/*
+			fetch('Simple.txt').then(function(response){
+				console.log(response);
+				return response.text();
+			}).then(function(text){
+				console.log(text);
+			});
+			*/
+			
+			//XMLHttpRequest
+			/*
+			var ajax = new XMLHttpRequest();
+			ajax.onreadystatechange = function(){
+				if(this.readyState == 4 && this.status == 200){
+					var json = JSON.parse(this.responseText);
+					console.log(json);
+					var content = '<div><img src="' + json.icon_url + '">' + json.value + '</div>';
+					$('#output').html(content);
+				}
+			};
+			ajax.open('Get', 'https://api.chucknorris.io/jokes/random', true);
+			ajax.send();
+			*/
+		}
+	</script>
+</body>
+</html>

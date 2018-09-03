@@ -1,0 +1,5 @@
+1) promise ?? - ES6
+
+2) let vs var- ES6
+let -> can hold the value at that time and won't change during loop
+var -> the value will be changed during loop
