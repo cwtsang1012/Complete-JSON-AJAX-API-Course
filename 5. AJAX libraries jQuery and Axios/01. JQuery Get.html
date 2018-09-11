@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Learn AJAX</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <h1>Learn AJAX jQuery</h1>
+    <div id="output"></div>
+    <button id="clickMe">Click Here</button>
+    <script>
+        $('#clickMe').click(webData);
+
+        function webData() {
+            var randomNum = Math.floor((Math.random() * 100) + 1);
+			
+			$.ajax({
+                method: 'GET'
+                , url: 'https://jsonplaceholder.typicode.com/posts/' + randomNum
+                , dataType: 'json'
+				, success: success
+            })
+			.fail(function () {
+                console.log('Error!!');
+            })
+			.done(function(){
+				console.log('Done.');
+			})
+        }
+
+        function success(data, status, xhr) {
+			console.log(data);
+			console.log(status);
+			console.log(xhr);
+            $('#output').html('<h2>' + data.title + '(' + data.id + ')</h2><p>' + data.body + '</p>')
+        }
+    </script>
+</body>
+
+</html>

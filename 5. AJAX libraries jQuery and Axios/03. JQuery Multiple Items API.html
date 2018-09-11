@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Learn AJAX</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+    <h1>Learn AJAX jQuery</h1>
+    <div id="output"></div>
+    <button id="clickMe">Click Here</button>
+    <script>
+        $('#clickMe').click(webData);
+
+        function webData() {
+			var url = 'https://api.spacexdata.com/v2/launches/';
+			$.getJSON(url, success);
+			
+			/*
+			$.ajax({
+                method: 'GET'
+                , url: 'https://jsonplaceholder.typicode.com/posts/' + randomNum
+                , dataType: 'json'
+				, success: success
+            })
+			.fail(function () {
+                console.log('Error!!');
+            })
+			.done(function(){
+				console.log('Done.');
+			})
+			*/
+        }
+
+        function success(data, status, xhr) {
+			console.log(data);
+			//console.log(status);
+			//console.log(xhr);
+			var html;
+			$.each(data, function(key, value){
+				html += '<h3>Flight Number ' + value.flight_number + '</h3>';
+				html += 'Details ' + value.details + '<br>';
+			});
+			$('#output').html(html);
+            //$('#output').html('<h2>' + data[0].mission_name + '(' + data[0].flight_number + ')</h2><p>' + data[0].details + '</p>')
+        }
+    </script>
+</body>
+
+</html>
