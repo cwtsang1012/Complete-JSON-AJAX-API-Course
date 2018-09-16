@@ -1,0 +1,5 @@
+After installation the nodeJS,
+
+> Open the cmd (Run as administrator)
+> type 'npm version' or 'npm -v'
+> type 'npm i npm' to update the latest version if necessary 

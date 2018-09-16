@@ -1,0 +1,19 @@
+Open cmd,
+
+> cd to the file location you want to place the JSON database
+  e.g cd Documents
+  e.g cd "Web Programming"
+> dir -> check the folder exists or not
+> create a folder named JSONDB
+> Run node command to install the JSON Server - npm install -g json-server
+> Create db.json file and start the JSONDB by "json-server db.json"
+
+db.json -> server as a database which store all data in json format
+
+to stop the db...ctrl + C 
+
+if any schema update...it is required to stop and re-start the db to get update
+
+if want to show up sth on localhost:3000, 
+you can create a public folder under the JSONDB and create index.html
+(Returns default index file or serves ./public directory)
